@@ -1,6 +1,7 @@
 package com.example.sprint1.service;
 
 import com.example.sprint1.dto.PostDto;
+import com.example.sprint1.dto.PostForListDto;
 import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.Post;
 import com.example.sprint1.repository.IPostRepository;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,20 +26,19 @@ public class PostServiceImpl implements IPostService {
         return null;
     }
 
-    public List<PostDto> followedList(Integer userId, String order) {
+    public List<PostForListDto> followedList(Integer userId, String order) {
         List<Post> sortedList = postRepository.getResentPost(userId);
-        System.out.println(sortedList);
+        //System.out.println(sortedList);
         if(sortedList.isEmpty()){
             throw new NotFoundException("No se encontró ninguna publicación de las personas seguidas");
         }
-        if(order.equals(null)){
+        if(order== null||order == ""||order.isEmpty()||order.isBlank()){
             List<Post> orderList = sortedList.stream()
                     .sorted(Comparator.comparing(post -> LocalDate.parse(post.getDate()))).toList();
             ObjectMapper mapper = new ObjectMapper();
-            return  orderList.stream().map(post -> mapper.convertValue(post,PostDto.class)).collect(Collectors.toList());
+            return  orderList.stream().map(post -> mapper.convertValue(post, PostForListDto.class)).collect(Collectors.toList());
         }
-
-        return null;
+    return null;
     }
 
     @Override

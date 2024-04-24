@@ -7,7 +7,7 @@ import java.util.List;
 public interface IPostService {
     Object addPost(PostDto postDto);
 
-    List<PostDto> followedList(Integer userId, String order);
+    Object followedList(Integer userId, String order);
 
     Object postPromo(PostDto postDto);
 

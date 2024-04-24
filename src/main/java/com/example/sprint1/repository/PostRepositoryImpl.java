@@ -41,6 +41,7 @@ public class PostRepositoryImpl implements IPostRepository {
         LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
 
         return  listOfPosts.stream()
+                .filter(post -> post.getId().equals(userId))
                 .filter(post -> LocalDate.parse(post.getDate()).isAfter(twoWeeksAgo))
                 .collect(Collectors.toList());
     }

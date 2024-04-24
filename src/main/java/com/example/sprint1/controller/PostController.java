@@ -22,7 +22,7 @@ public class PostController {
 
     //US 0006 US 0009
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<?> followedList(@PathVariable Integer userId,@RequestParam(required = false) String order){
+    public ResponseEntity<?> followedList(@PathVariable Integer userId,@RequestParam(value = "order", required = false) String order){
         return new ResponseEntity<>(postService.followedList(userId,order), HttpStatus.OK);
     }
 
