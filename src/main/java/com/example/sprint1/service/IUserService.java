@@ -11,4 +11,6 @@ public interface IUserService {
     Object setUnfollow(Integer userId, Integer userIdToUnfollow);
 
     Object getFollowersOrdered(Integer userId, String order);
+
+    Object getFollowedOrdered(Integer userId, String order);
 }
