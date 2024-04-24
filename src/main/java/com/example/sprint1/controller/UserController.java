@@ -24,13 +24,29 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<?> getFollowerList(@PathVariable Integer userId){
-        return new ResponseEntity<>(userService.getFollowerList(userId),HttpStatus.OK);
+    public ResponseEntity<?> getFollowerList(@PathVariable Integer userId , @RequestParam(value = "order", required = false) String order){
+
+        if (order == null){
+            return new ResponseEntity<>(userService.getFollowerList(userId),HttpStatus.OK);
+        }
+        else {
+            //TODO modify method value
+            return new ResponseEntity<>(userService.getFollowedOrdered(userId, order),HttpStatus.OK);
+        }
+
+
     }
 
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<?> getFollowedList(@PathVariable Integer userId){
-        return new ResponseEntity<>(userService.getFollowedList(userId),HttpStatus.OK);
+    public ResponseEntity<?> getFollowedList(@PathVariable Integer userId, @RequestParam(value = "order", required = false) String order){
+
+
+        if (order == null){
+            return new ResponseEntity<>(userService.getFollowedList(userId), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(userService.getFollowedOrdered(userId, order), HttpStatus.OK);
+        }
     }
 
     @DeleteMapping("/{userId}/unfollow/{userIdToUnfollow}")
@@ -38,6 +54,7 @@ public class UserController {
         return new ResponseEntity<>(userService.setUnfollow(userId,userIdToUnfollow),HttpStatus.NO_CONTENT);
     }
 
+    //TODO quitar el ultimo método
     @GetMapping("{userId}/followers/list-ordered")
     public ResponseEntity<?> getFollowerListOrderByName(@PathVariable Integer userId,@RequestParam String order){
         return new ResponseEntity<>(userService.getFollowersOrdered(userId,order),HttpStatus.OK);

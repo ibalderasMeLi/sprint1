@@ -90,8 +90,15 @@ public class UserServiceImpl implements IUserService{
     @Override
     public FollowerListDto getFollowersOrdered(Integer userId, String order) {
 
+        Comparator comparador;
+        if(order.equals("name_asc")){
+            comparador = Comparator.naturalOrder();
+        }
+        else {
+            comparador = Comparator.reverseOrder();
+        }
         FollowerListDto followerListDto = getFollowerList(userId);
-        List<FollowerUserDto> followerList = followerListDto.getFollowers().stream().sorted(Comparator.comparing(FollowerUserDto::getUser_name)).toList();
+        List<FollowerUserDto> followerList = followerListDto.getFollowers().stream().sorted(Comparator.comparing(FollowerUserDto::getUser_name, comparador)).toList();
         followerListDto.setFollowers(followerList);
 
         return followerListDto;
@@ -106,8 +113,16 @@ public class UserServiceImpl implements IUserService{
     @Override
     public FollowedListDto getFollowedOrdered(Integer userId, String order) {
 
+        Comparator comparador;
+        if(order.equals("name_asc")){
+            comparador = Comparator.naturalOrder();
+        }
+        else {
+            comparador = Comparator.reverseOrder();
+        }
+
         FollowedListDto followedListDto = getFollowedList(userId);
-        List<FollowdUsersDto> followedList = followedListDto.getFollowed().stream().sorted(Comparator.comparing(FollowdUsersDto::getUser_name)).toList();
+        List<FollowdUsersDto> followedList = followedListDto.getFollowed().stream().sorted(Comparator.comparing(FollowdUsersDto::getUser_name, comparador)).toList();
         followedListDto.setFollowed(followedList);
 
         return followedListDto;
