@@ -10,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,17 +27,27 @@ public class PostServiceImpl implements IPostService {
 
     public List<PostForListDto> followedList(Integer userId, String order) {
         List<Post> sortedList = postRepository.getResentPost(userId);
-        //System.out.println(sortedList);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         if(sortedList.isEmpty()){
             throw new NotFoundException("No se encontró ninguna publicación de las personas seguidas");
         }
-        if(order== null||order == ""||order.isEmpty()||order.isBlank()){
+        if(order== null||order == ""||order.isEmpty()||order.isBlank()||order.equals("date_desc")){
+
             List<Post> orderList = sortedList.stream()
-                    .sorted(Comparator.comparing(post -> LocalDate.parse(post.getDate()))).toList();
+                    .sorted(Comparator.comparing(post -> LocalDate.parse(((Post) post).getDate())).reversed())
+                    .toList();
+            //---
             ObjectMapper mapper = new ObjectMapper();
             return  orderList.stream().map(post -> mapper.convertValue(post, PostForListDto.class)).collect(Collectors.toList());
         }
-    return null;
+        else if (order.equals("date_asc")) {
+            List<Post> orderList = sortedList.stream()
+                    .sorted(Comparator.comparing(post -> LocalDate.parse(post.getDate(), formatter))).toList();
+            ObjectMapper mapper = new ObjectMapper();
+            return orderList.stream().map(post -> mapper.convertValue(post, PostForListDto.class)).collect(Collectors.toList());
+        }
+
+        return null;
     }
 
     @Override
