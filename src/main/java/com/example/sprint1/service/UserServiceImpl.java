@@ -1,9 +1,5 @@
 package com.example.sprint1.service;
 
-import com.example.sprint1.dto.FollowdUsersDto;
-import com.example.sprint1.dto.FollowedListDto;
-import com.example.sprint1.dto.FollowerListDto;
-import com.example.sprint1.dto.FollowerUserDto;
 import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.IUserRepository;
