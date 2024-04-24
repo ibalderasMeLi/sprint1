@@ -34,4 +34,5 @@ public class UserRepositoryImpl implements IUserRepository{
     public List<User> findAll(){
         return listOfUsers;
     }
+
 }
