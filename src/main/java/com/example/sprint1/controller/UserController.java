@@ -3,6 +3,7 @@ package com.example.sprint1.controller;
 import com.example.sprint1.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<?> getFollowerList(@PathVariable Integer userId){
-        return new ResponseEntity<>(userService.getFollowerList(userId),HttpStatus.OK);
+    public ResponseEntity<?> getFollowerList(@PathVariable Integer userId, @RequestParam(required = false) String order){
+        return new ResponseEntity<>(userService.getFollowerList(userId, order),HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/followed/list")
