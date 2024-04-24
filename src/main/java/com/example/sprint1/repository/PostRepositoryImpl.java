@@ -8,15 +8,18 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
-public class PostRepositoryImpl implements IPostRepository{
+public class PostRepositoryImpl implements IPostRepository {
 
 
     private static List<Post> listOfPosts;
 
-    public PostRepositoryImpl() throws IOException{
+    public PostRepositoryImpl() throws IOException {
         loadDatabase();
     }
 
@@ -25,9 +28,21 @@ public class PostRepositoryImpl implements IPostRepository{
         ObjectMapper objectMapper = new ObjectMapper();
         List<Post> posts;
 
-        file= ResourceUtils.getFile("classpath:posts.json");
-        posts = objectMapper.readValue(file,new TypeReference<List<Post>>(){});
+        file = ResourceUtils.getFile("classpath:posts.json");
+        posts = objectMapper.readValue(file, new TypeReference<List<Post>>() {
+        });
 
         listOfPosts = posts;
     }
+
+    @Override
+    public List<Post> getResentPost(Integer userId) {
+
+        LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+
+        return  listOfPosts.stream()
+                .filter(post -> LocalDate.parse(post.getDate()).isAfter(twoWeeksAgo))
+                .collect(Collectors.toList());
+    }
 }
+
