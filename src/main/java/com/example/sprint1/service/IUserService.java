@@ -1,14 +1,20 @@
 package com.example.sprint1.service;
+
+import com.example.sprint1.dto.FollowListDto;
+
 public interface IUserService {
-    Object addFollower(Integer userID, Integer userIdToFollow);
+    void addFollower(Integer userID, Integer userIdToFollow);
 
     Object getFollowerCount(Integer userId);
 
-    Object getFollowerList(Integer userId);
+    FollowListDto getFollowerList(Integer userId, String order);
 
     Object getFollowedList(Integer userId);
 
     Object setUnfollow(Integer userId, Integer userIdToUnfollow);
 
-    Object getFollowersOrdered(Integer userId, String order);
+
+    public FollowListDto getFollowersOrdered(Integer userId, String order);
+
+    Object getFollowedOrdered(Integer userId, String order);
 }
