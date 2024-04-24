@@ -1,6 +1,11 @@
 package com.example.sprint1.service;
+
+import com.example.sprint1.model.User;
+
+import java.util.List;
+
 public interface IUserService {
-    Object addFollower(Integer userID, Integer userIdToFollow);
+    void addFollower(Integer userID, Integer userIdToFollow);
 
     Object getFollowerCount(Integer userId);
 
@@ -10,5 +15,11 @@ public interface IUserService {
 
     Object setUnfollow(Integer userId, Integer userIdToUnfollow);
 
+    Object getFollowedList(Integer userId, String order);
+
+    Object getFollowerList(Integer userId, String order);
+
     Object getFollowersOrdered(Integer userId, String order);
+
+    List<User> getUsers();
 }

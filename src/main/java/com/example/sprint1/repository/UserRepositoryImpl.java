@@ -1,6 +1,5 @@
 package com.example.sprint1.repository;
 
-import com.example.sprint1.model.Post;
 import com.example.sprint1.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -9,6 +8,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -34,4 +34,19 @@ public class UserRepositoryImpl implements IUserRepository{
     public List<User> findAll(){
         return listOfUsers;
     }
+
+    @Override
+    public User findUserById(Integer id) {
+        return listOfUsers.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    @Override
+    public void updateUserFollower(User user, User userToFollow) {
+        user.addFollowed(userToFollow.getId());
+        userToFollow.addFollower(user.getId());
+    }
+
+
+
+
 }

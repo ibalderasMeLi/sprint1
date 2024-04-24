@@ -1,8 +1,12 @@
 package com.example.sprint1.service;
 
+import com.example.sprint1.exception.BadRequestException;
+import com.example.sprint1.model.User;
 import com.example.sprint1.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements IUserService{
@@ -11,8 +15,16 @@ public class UserServiceImpl implements IUserService{
     IUserRepository userRepository;
 
     @Override
-    public Object addFollower(Integer userID, Integer userIdToFollow) {
-        return null;
+    public void addFollower(Integer userID, Integer userIdToFollow) {
+        User userAux = userRepository.findUserById(userID);
+        User userToFollow = userRepository.findUserById(userIdToFollow);
+        if(userAux == null)
+            throw new BadRequestException("User not found");
+        if(userToFollow == null)
+            throw new BadRequestException("User to follow not found");
+        if(userAux.getFollowed().contains(userToFollow.getId()) || userToFollow.getFollowers().contains(userAux.getId()))
+            throw new BadRequestException("User already followed");
+        userRepository.updateUserFollower(userAux, userToFollow);
     }
 
     @Override
@@ -36,7 +48,22 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
+    public Object getFollowedList(Integer userId, String order) {
+        return null;
+    }
+
+    @Override
+    public Object getFollowerList(Integer userId, String order) {
+        return null;
+    }
+
+    @Override
     public Object getFollowersOrdered(Integer userId, String order) {
         return null;
+    }
+
+    @Override
+    public List<User> getUsers() {
+        return userRepository.findAll();
     }
 }

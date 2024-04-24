@@ -14,35 +14,33 @@ public class ProductController {
     @Autowired
     IProductService productService;
 
+    //US 0005
     @PostMapping("/products/post")
-    public ResponseEntity<?> addPost(@RequestBody PostDto postDto){
-        return new ResponseEntity<>(productService.addPost(postDto) , HttpStatus.CREATED);
+    public ResponseEntity<?> addPost(@RequestBody PostDto postDto) {
+        return new ResponseEntity<>(productService.addPost(postDto), HttpStatus.CREATED);
     }
 
+    //US 0006 US 0009
     @GetMapping("/followed/{userId}/list")
-    public ResponseEntity<?> followedList(@PathVariable Integer userId){
-        return new ResponseEntity<>(productService.followedList(userId), HttpStatus.OK);
+    public ResponseEntity<?> followedList(@PathVariable Integer userId, @RequestParam String order) {
+        return new ResponseEntity<>(productService.followedList(userId, order), HttpStatus.OK);
     }
 
-
-    @GetMapping("/followed/{userId}/list-ordered")
-    public ResponseEntity<?> orderedList(@PathVariable Integer userId, @RequestParam String order){
-        return new ResponseEntity<>(productService.orderedList(userId, order), HttpStatus.OK);
-    }
-
-
+    //US 0010:
     @PostMapping("/promo-post")
-    public ResponseEntity<?> postPromo(@RequestBody PostDto postDto){
+    public ResponseEntity<?> postPromo(@RequestBody PostDto postDto) {
         return new ResponseEntity<>(productService.postPromo(postDto), HttpStatus.CREATED);
     }
 
+    //US 0011
     @GetMapping("/promo-post/count")
-    public ResponseEntity<?> quantityPromo(@RequestParam Integer user_id){
+    public ResponseEntity<?> quantityPromo(@RequestParam Integer user_id) {
         return new ResponseEntity<>(productService.quantityPromo(user_id), HttpStatus.OK);
     }
 
+    //US 0012
     @GetMapping("/promo-post/list")
-    public ResponseEntity<?> getPromo(@RequestParam Integer user_id){
+    public ResponseEntity<?> getPromo(@RequestParam Integer user_id) {
         return new ResponseEntity<>(productService.getPromo(user_id), HttpStatus.OK);
     }
 }

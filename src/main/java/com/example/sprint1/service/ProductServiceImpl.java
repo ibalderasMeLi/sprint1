@@ -11,8 +11,14 @@ public class ProductServiceImpl implements IProductService{
     @Autowired
     IProductRepository productRepository;
 
+
     @Override
     public Object addPost(PostDto postDto) {
+        return null;
+    }
+
+    @Override
+    public Object followedList(Integer userId, String order) {
         return null;
     }
 
@@ -20,12 +26,6 @@ public class ProductServiceImpl implements IProductService{
     public Object followedList(Integer userId) {
         return null;
     }
-
-    @Override
-    public Object orderedList(Integer userId, String order) {
-        return null;
-    }
-
 
     @Override
     public Object postPromo(PostDto postDto) {

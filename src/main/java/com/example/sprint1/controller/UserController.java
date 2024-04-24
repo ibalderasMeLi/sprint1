@@ -13,33 +13,34 @@ public class UserController {
     @Autowired
     IUserService userService;
 
+    //US 0001
     @PostMapping("/{userID}/follow/{userIdToFollow}")
     public ResponseEntity<?> postNewFollower(@PathVariable Integer userID, @PathVariable Integer userIdToFollow){
-        return new ResponseEntity<>(userService.addFollower(userID,userIdToFollow), HttpStatus.CREATED);
+        userService.addFollower(userID,userIdToFollow);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    //US 0002
     @GetMapping("/{userId}/followers/count")
     public ResponseEntity<?> getFollowersCount(@PathVariable Integer userId){
         return new ResponseEntity<>(userService.getFollowerCount(userId),HttpStatus.OK);
     }
 
+    //US 0003, US 0008
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<?> getFollowerList(@PathVariable Integer userId){
-        return new ResponseEntity<>(userService.getFollowerList(userId),HttpStatus.OK);
+    public ResponseEntity<?> getFollowerList(@PathVariable Integer userId,@RequestParam String order){
+        return new ResponseEntity<>(userService.getFollowerList(userId,order),HttpStatus.OK);
     }
 
+    //US 0004 US, US 0008
     @GetMapping("/{userId}/followed/list")
-    public ResponseEntity<?> getFollowedList(@PathVariable Integer userId){
-        return new ResponseEntity<>(userService.getFollowedList(userId),HttpStatus.OK);
+    public ResponseEntity<?> getFollowedList(@PathVariable Integer userId,@RequestParam String order){
+        return new ResponseEntity<>(userService.getFollowedList(userId,order),HttpStatus.OK);
     }
 
+    //US 0007
     @DeleteMapping("/{userId}/unfollow/{userIdToUnfollow}")
     public ResponseEntity<?> setUnfollow(@PathVariable Integer userId,@PathVariable Integer userIdToUnfollow){
         return new ResponseEntity<>(userService.setUnfollow(userId,userIdToUnfollow),HttpStatus.NO_CONTENT);
-    }
-
-    @GetMapping("{userId}/followers/list-ordered")
-    public ResponseEntity<?> getFollowerListOrderByName(@PathVariable Integer userId,@RequestParam String order){
-        return new ResponseEntity<>(userService.getFollowersOrdered(userId,order),HttpStatus.OK);
     }
 }

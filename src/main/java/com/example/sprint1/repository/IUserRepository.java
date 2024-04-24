@@ -5,4 +5,6 @@ import java.util.List;
 
 public interface IUserRepository {
     List<User> findAll();
+    User findUserById(Integer id);
+    void updateUserFollower(User user, User userToFollow);
 }
