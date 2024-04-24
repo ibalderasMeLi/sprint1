@@ -38,16 +38,12 @@ public class UserServiceImpl implements IUserService{
         List<FollowerUsersDto> followersList = new ArrayList();
 
         Set<Integer> followers = principalUser.getFollowers();
-        if (order == null){
-            for (Integer miniId : followers) {
-                optionalUser = userRepository.getUserById(miniId);
-                optionalUser.ifPresent(user -> followersList.add(convertToFollowUserDto(user)));
-            }
-            return new FollowerListDto(principalUser.getId(), principalUser.getUser_name(), followersList);
+
+        for (Integer miniId : followers) {
+            optionalUser = userRepository.getUserById(miniId);
+            optionalUser.ifPresent(user -> followersList.add(convertToFollowUserDto(user)));
         }
-        else{
-            return null;
-        }
+        return new FollowerListDto(principalUser.getId(), principalUser.getUser_name(), followersList);
     }
 
     @Override

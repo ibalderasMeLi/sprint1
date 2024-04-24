@@ -26,7 +26,17 @@ public class UserController {
 
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<?> getFollowerList(@PathVariable Integer userId, @RequestParam(required = false) String order){
-        return new ResponseEntity<>(userService.getFollowerList(userId, order),HttpStatus.OK);
+        /**
+         * This method is used to get the list of followers that the user have and package it into a FolloweRListDto object
+         * @param userId - The id of the user
+         * @return - A FollowerListDto object that contains the list of followers that the user have
+         */
+        if (order == null || order.isEmpty()){
+            return new ResponseEntity<>(userService.getFollowerList(userId, order),HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>("ssss",HttpStatus.OK);
+        }
     }
 
     @GetMapping("/{userId}/followed/list")
