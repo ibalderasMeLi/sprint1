@@ -4,11 +4,10 @@ public interface IUserService {
 
     Object getFollowerCount(Integer userId);
 
-    Object getFollowerList(Integer userId);
+    Object getFollowerList(Integer userId, String order);
 
-    Object getFollowedList(Integer userId);
+    Object getFollowedList(Integer userId, String order);
 
     Object setUnfollow(Integer userId, Integer userIdToUnfollow);
 
-    Object getFollowersOrdered(Integer userId, String order);
 }
