@@ -35,8 +35,8 @@ public class UserServiceImpl implements IUserService{
 
     /**
      * This method is used to get the list of users that the user follows and package it into a FollowedListDto object
-     * @param userId
-     * @return
+     * @param userId - The id of the user
+     * @return - A FollowedListDto object that contains the list of users that the user follows
      */
     @Override
     public FollowedListDto getFollowedList(Integer userId) {
