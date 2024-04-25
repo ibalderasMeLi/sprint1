@@ -2,6 +2,8 @@ package com.example.sprint1.service;
 
 import com.example.sprint1.dto.FollowerListDto;
 import com.example.sprint1.dto.FollowerUsersDto;
+import com.example.sprint1.dto.FollowListDto;
+import com.example.sprint1.dto.FollowdUserDto;
 import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.IUserRepository;
@@ -54,16 +56,17 @@ public class UserServiceImpl implements IUserService{
         }
         return new FollowerListDto(principalUser.getId(), principalUser.getUser_name(), followersList);
 
-    public FollowerListDto getFollowerList(Integer userId) {
+
+    public FollowListDto getFollowerList(Integer userId) {
         List<User> allUsers = userRepository.findAll();
         Optional<User> userSpecified = allUsers.stream().filter(user -> user.getId() == userId).findFirst();
         if (userSpecified.isPresent() && userSpecified.get().getFollowers()!=null){
             Set<Integer> followerList = userSpecified.get().getFollowers();
-            List<FollowerUserDto> followerUsersDto =  allUsers.stream()
+            List<FollowdUserDto> followerUsersDto =  allUsers.stream()
                     .filter(user ->  followerList.contains(user.getId()))
-                    .map(user -> new FollowerUserDto(user.getId(), user.getUser_name())).toList();
-            FollowerListDto followerListDto = new FollowerListDto();
-            followerListDto.setFollowers(followerUsersDto);
+                    .map(user -> new FollowdUserDto(user.getId(), user.getUser_name())).toList();
+            FollowListDto followerListDto = new FollowListDto();
+            followerListDto.setFollowed(followerUsersDto);
             followerListDto.setUser_id(userId);
             followerListDto.setUser_name(userSpecified.get().getUser_name());
             return followerListDto;
@@ -75,7 +78,7 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public  FollowedListDto getFollowedList(Integer userId) {
+    public  FollowListDto getFollowedList(Integer userId) {
         // Get all users from repository
         List<User> allUsers = userRepository.findAll();
         // Select the user that matches with the id supplied
@@ -84,10 +87,10 @@ public class UserServiceImpl implements IUserService{
             // Get the list of users that the user follows
             Set<Integer> followedList = userSpecified.get().getFollowed();
             // Return the list of users that the user follows pa
-            List<FollowdUsersDto> followdUsersDtos = allUsers.stream()
+            List<FollowdUserDto> followdUsersDtos = allUsers.stream()
                     .filter(user -> followedList.contains(user.getId()))
-                    .map(user -> new FollowdUsersDto(user.getId(), user.getUser_name())).toList();
-            FollowedListDto followedListDto = new FollowedListDto();
+                    .map(user -> new FollowdUserDto(user.getId(), user.getUser_name())).toList();
+            FollowListDto followedListDto = new FollowListDto();
             followedListDto.setFollowed(followdUsersDtos);
             followedListDto.setUser_id(userId);
             followedListDto.setUser_name(userSpecified.get().getUser_name());
@@ -110,42 +113,51 @@ public class UserServiceImpl implements IUserService{
      * @return followerListDto
      */
     @Override
-    public FollowerListDto getFollowersOrdered(Integer userId, String order) {
-
-        Comparator comparador;
+    public FollowListDto getFollowersOrdered(Integer userId, String order) {
+        //Decides order of sorting
+        Comparator<String> comparador;
         if(order.equals("name_asc")){
             comparador = Comparator.naturalOrder();
         }
         else {
             comparador = Comparator.reverseOrder();
         }
-        FollowerListDto followerListDto = getFollowerList(userId);
-        List<FollowerUserDto> followerList = followerListDto.getFollowers().stream().sorted(Comparator.comparing(FollowerUserDto::getUser_name, comparador)).toList();
-        followerListDto.setFollowers(followerList);
+
+        //Call to getFollowedList (already exception checked)
+        FollowListDto followerListDto = getFollowedList(userId);
+        List<FollowdUserDto> followerList = followerListDto.getFollowed().stream()
+                .sorted(Comparator.comparing(FollowdUserDto::getUser_name, comparador))
+                .toList();
+
+
+
+        //Set ordered list
+        followerListDto.setFollowed(followerList);
 
         return followerListDto;
     }
-
     /**
-     * Call to getFollowedList to sort by name the users followed users.
+     * Call to getFollowerList to sort by name the followed users.
      * @param userId
      * @param order
-     * @return followedListDto
+     * @return followerListDto
      */
-    @Override
-    public FollowedListDto getFollowedOrdered(Integer userId, String order) {
-
-        Comparator comparador;
+    public FollowListDto getFollowedOrdered(Integer userId, String order) {
+        //Decides order of sorting
+        Comparator<String> comparador;
         if(order.equals("name_asc")){
             comparador = Comparator.naturalOrder();
         }
         else {
             comparador = Comparator.reverseOrder();
         }
+        //Call to getFollowedList (already exception checked)
+        FollowListDto followedListDto = getFollowerList(userId);
+        List<FollowdUserDto> followerList = followedListDto.getFollowed().stream()
+                .sorted(Comparator.comparing(FollowdUserDto::getUser_name, comparador)).toList();
 
-        FollowedListDto followedListDto = getFollowedList(userId);
-        List<FollowdUsersDto> followedList = followedListDto.getFollowed().stream().sorted(Comparator.comparing(FollowdUsersDto::getUser_name, comparador)).toList();
-        followedListDto.setFollowed(followedList);
+        //Set and return followers
+        followedListDto.setFollowed(followerList);
 
         return followedListDto;
     }
