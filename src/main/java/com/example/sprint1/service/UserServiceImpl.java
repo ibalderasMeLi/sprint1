@@ -55,7 +55,7 @@ public class UserServiceImpl implements IUserService{
             optionalUser.ifPresent(user -> followersList.add(convertToFollowUserDto(user)));
         }
         return new FollowerListDto(principalUser.getId(), principalUser.getUser_name(), followersList);
-
+    }
 
     public FollowListDto getFollowerList(Integer userId) {
         List<User> allUsers = userRepository.findAll();
@@ -124,7 +124,7 @@ public class UserServiceImpl implements IUserService{
         }
 
         //Call to getFollowedList (already exception checked)
-        FollowListDto followerListDto = getFollowedList(userId);
+        FollowListDto followerListDto = getFollowerList(userId);
         List<FollowdUserDto> followerList = followerListDto.getFollowed().stream()
                 .sorted(Comparator.comparing(FollowdUserDto::getUser_name, comparador))
                 .toList();
