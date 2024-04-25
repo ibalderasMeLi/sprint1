@@ -21,6 +21,8 @@ public class UserServiceImpl implements IUserService{
      */
     @Override
     public void addFollower(Integer userID, Integer userIdToFollow) {
+        if(userID.equals(userIdToFollow))
+            throw new BadRequestException("Can't follow yourself");
         User userAux = userRepository.findUserById(userID);
         User userToFollow = userRepository.findUserById(userIdToFollow);
         if(userAux == null)
