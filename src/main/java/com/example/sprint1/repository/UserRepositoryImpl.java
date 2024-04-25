@@ -1,6 +1,5 @@
 package com.example.sprint1.repository;
 
-import com.example.sprint1.model.Post;
 import com.example.sprint1.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -10,6 +9,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository{
@@ -33,5 +33,12 @@ public class UserRepositoryImpl implements IUserRepository{
 
     public List<User> findAll(){
         return listOfUsers;
+    }
+
+    @Override
+    public Optional<User> getUserById(int id) {
+        return listOfUsers.stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst();
     }
 }

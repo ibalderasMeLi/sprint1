@@ -4,6 +4,7 @@ import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,11 +25,17 @@ public class UserController {
         return new ResponseEntity<>(userService.getFollowerCount(userId),HttpStatus.OK);
     }
 
+    /*
+     * This method is used to get the list of followers that the user have and package it into a FolloweRListDto object
+     * @param userId - The id of the user
+     * @return - A FollowerListDto object that contains the list of followers that the user have
+     */
     @GetMapping("/{userId}/followers/list")
-    public ResponseEntity<?> getFollowerList(@PathVariable Integer userId , @RequestParam(value = "order", required = false) String order){
+    public ResponseEntity<?> getFollowerList(@PathVariable Integer userId, @RequestParam(required = false) String order){
 
-        if (order == null){
-            return new ResponseEntity<>(userService.getFollowerList(userId),HttpStatus.OK);
+        // Validation on whether the list will have any order
+        if (order == null || order.isEmpty()){
+            return new ResponseEntity<>(userService.getFollowerList(userId, order),HttpStatus.OK);
         }
         if (order.equals("name_asc") || order.equals("name_desc")){
             return new ResponseEntity<>(userService.getFollowersOrdered(userId, order),HttpStatus.OK);
@@ -37,8 +44,6 @@ public class UserController {
             throw new NotFoundException("Query params not matching any case");
 
         }
-
-
     }
 
     @GetMapping("/{userId}/followed/list")

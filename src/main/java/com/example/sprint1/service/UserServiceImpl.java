@@ -1,5 +1,7 @@
 package com.example.sprint1.service;
 
+import com.example.sprint1.dto.FollowerListDto;
+import com.example.sprint1.dto.FollowerUsersDto;
 import com.example.sprint1.dto.FollowListDto;
 import com.example.sprint1.dto.FollowdUserDto;
 import com.example.sprint1.exception.NotFoundException;
@@ -8,6 +10,7 @@ import com.example.sprint1.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +32,31 @@ public class UserServiceImpl implements IUserService{
         return null;
     }
 
+    /**
+     * Get the list of followers for a user
+     * @param userId The ID of the user
+     * @param order The order in which to return the followers
+     * @return The list of followers for the user
+     */
     @Override
+    public FollowerListDto getFollowerList(Integer userId, String order) {
+        // Get the user by ID and check if the user exists
+        Optional<User> optionalUser = userRepository.getUserById(userId);
+        User principalUser = optionalUser.orElseThrow(
+                () -> new NotFoundException("No se encontró el usuario con el ID proporcionado"));
+
+        List<FollowerUsersDto> followersList = new ArrayList();
+
+        Set<Integer> followers = principalUser.getFollowers();
+
+        // Iterate over the followers and add them to the list in DTO format
+        for (Integer miniId : followers) {
+            optionalUser = userRepository.getUserById(miniId);
+            optionalUser.ifPresent(user -> followersList.add(convertToFollowUserDto(user)));
+        }
+        return new FollowerListDto(principalUser.getId(), principalUser.getUser_name(), followersList);
+
+
     public FollowListDto getFollowerList(Integer userId) {
         List<User> allUsers = userRepository.findAll();
         Optional<User> userSpecified = allUsers.stream().filter(user -> user.getId() == userId).findFirst();
@@ -135,4 +162,8 @@ public class UserServiceImpl implements IUserService{
         return followedListDto;
     }
 
+    @Override
+    public FollowerUsersDto convertToFollowUserDto(User user) {
+        return new FollowerUsersDto(user.getId(), user.getUser_name());
+    }
 }
