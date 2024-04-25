@@ -152,7 +152,7 @@ public class UserServiceImpl implements IUserService{
             comparador = Comparator.reverseOrder();
         }
         //Call to getFollowedList (already exception checked)
-        FollowListDto followedListDto = getFollowerList(userId);
+        FollowListDto followedListDto = getFollowedList(userId);
         List<FollowdUserDto> followerList = followedListDto.getFollowed().stream()
                 .sorted(Comparator.comparing(FollowdUserDto::getUser_name, comparador)).toList();
 
