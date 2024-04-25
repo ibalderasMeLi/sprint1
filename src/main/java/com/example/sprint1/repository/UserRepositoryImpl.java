@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class UserRepositoryImpl implements IUserRepository{
@@ -43,7 +44,6 @@ public class UserRepositoryImpl implements IUserRepository{
         return listOfUsers;
     }
 
-
     /**
      * Function that searches in the list by userId
      * @param id Id of the user to search
@@ -65,7 +65,11 @@ public class UserRepositoryImpl implements IUserRepository{
         userToFollow.addFollower(user.getId());
     }
 
-
-
+    @Override
+    public Optional<User> getUserById(int id) {
+        return listOfUsers.stream()
+                .filter(user -> user.getId().equals(id))
+                .findFirst();
+    }
 
 }
