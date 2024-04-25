@@ -2,6 +2,7 @@ package com.example.sprint1.controller;
 
 import com.example.sprint1.dto.PostDto;
 import com.example.sprint1.service.IPostService;
+import com.example.sprint1.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +15,29 @@ public class PostController {
     @Autowired
     IPostService postService;
 
-
-        /**
-         * US 0005
-         * Create a new post
-         * @param postDto
-         * @return
-         */
-        @PostMapping("/products/post")
-        public ResponseEntity<?> addPost (@RequestBody PostDto postDto){
-            return new ResponseEntity<>(postService.addPost(postDto), HttpStatus.CREATED);
+        // US 0005
+    /**
+     * This method is used to create a new post.
+     * @param postDto - The DTO containing the necessary information for creating a new post.
+     * @return ResponseEntity<?> - This method returns a ResponseEntity object. If the post is successfully created,
+     * it returns the post's details with an HTTP 200 OK status. If an error occurs,
+     * it returns an error message with an HTTP 400 Bad Request status.
+     */
+    // method to create a new post
+    @PostMapping("/post")
+    public ResponseEntity<?> addPost(@RequestBody PostDto postDto){
+        // try block to handle exceptions
+        try {
+            // Call service to handle logic of adding a new post
+            Object response = postService.addPost(postDto);
+            // Return a ResponseEntity with status 200 Ok
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            // Return a ResponseEntity with status 400 Bad Request
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
+    }
+    // finished method US0005
 
 
         /**

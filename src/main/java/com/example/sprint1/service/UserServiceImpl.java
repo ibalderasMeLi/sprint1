@@ -1,6 +1,4 @@
 package com.example.sprint1.service;
-
-
 import com.example.sprint1.dto.CountFollowersUserDto;
 
 import com.example.sprint1.exception.BadRequestException;
@@ -148,11 +146,29 @@ public class UserServiceImpl implements IUserService{
         }
     }
 
-
     @Override
     public Object setUnfollow(Integer userId, Integer userIdToUnfollow) {
-        return null;
+        // Checks if the IDs are the same, indicating the user is trying to unfollow themselves.
+        if (userId.equals(userIdToUnfollow)) {
+            throw new IllegalArgumentException("You cannot unfollow yourself.");
+        }
+        // Retrieve the user and the user to unfollow from the repository
+        User user = userRepository.findUserById(userId);
+        User userToUnfollow = userRepository.findUserById(userIdToUnfollow);
+        if (user == null || userToUnfollow == null) {
+            throw new IllegalArgumentException("User not found.");
+        }
+        // Verify if the current user actually follows the user to unfollow
+        if (!user.getFollowed().contains(userIdToUnfollow)) {
+            // If the current user is not following the other user, return an error
+            throw new IllegalArgumentException("You are not following this user.");
+        }
+        // Proceed to update the follow state between users
+        userRepository.updateUserFollower(user, userToUnfollow);
+        // Return a success message after successfully unfollowing the user
+        return "Unfollow successful";
     }
+    // finished method US0007
 
 
     /**

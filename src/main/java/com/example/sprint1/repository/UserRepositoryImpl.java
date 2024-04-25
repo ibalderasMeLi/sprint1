@@ -36,7 +36,6 @@ public class UserRepositoryImpl implements IUserRepository{
         listOfUsers = users;
     }
 
-
     /**
      * Returns the list of all users
      * @return

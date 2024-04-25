@@ -15,6 +15,7 @@ public class UserController {
     @Autowired
     IUserService userService;
 
+    @PostMapping("/{userID}/follow/{userIdToFollow}")
     /**
      * US 001
      * Endpoint that implements that follows a certain seller
@@ -39,8 +40,6 @@ public class UserController {
         return new ResponseEntity<>(userService.getFollowerCount(userId),HttpStatus.OK);
     }
 
-
-
     /*
      * This method is used to get the list of followers that the user have and package it into a FolloweRListDto object
      * @param userId - The id of the user
@@ -61,8 +60,6 @@ public class UserController {
 
         }
     }
-
-    //US 0004 US, US 0008
 
     /**
      * US 0004, US 0008
@@ -86,22 +83,25 @@ public class UserController {
     }
 
     //US 0007
-
     /**
-     * US 0007
-     * Unfollows a user (userId unfollows userIdToUnfollow)
-     * @param userId
-     * @param userIdToUnfollow
-     * @return
+     * Endpoint to allow a user to unfollow another user using the DELETE method.
      */
     @DeleteMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<?> setUnfollow(@PathVariable Integer userId,@PathVariable Integer userIdToUnfollow){
-        return new ResponseEntity<>(userService.setUnfollow(userId,userIdToUnfollow),HttpStatus.NO_CONTENT);
-    }
-          
+    public ResponseEntity<?> setUnfollow(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow){
+        try {
+            // Call the service to process the unfollow action
+            userService.setUnfollow(userId, userIdToUnfollow);
+            // If there's a logical error return an error message with HTTP 400 Bad Request
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            // For other unexpected errors, return a generic error message with HTTP 400 Bad Request
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+
     //TODO quitar el ultimo método
     @GetMapping("{userId}/followers/list-ordered")
     public ResponseEntity<?> getFollowerListOrderByName(@PathVariable Integer userId,@RequestParam String order){
         return new ResponseEntity<>(userService.getFollowersOrdered(userId,order),HttpStatus.OK);
     }
+    // finished method US0007
 }

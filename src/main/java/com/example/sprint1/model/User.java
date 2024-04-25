@@ -38,4 +38,20 @@ public class User {
     public Integer getCountFollowed(){
         return followed.size();
     }
+
+    // Add Isay params for US 0007
+    public void addFollower(Integer id){
+        followers.add(id);
+    }
+    public void addFollowed(Integer id){
+        followed.add(id);
+    }
+
+    public void deleteFollower(Integer id){
+        followers.remove(id);
+    }
+
+    public void deleteFollowed(Integer id){
+        followed.remove(id);
+    }
 }

@@ -1,10 +1,20 @@
 package com.example.sprint1.service;
 
 import com.example.sprint1.dto.PostDto;
-
+import com.example.sprint1.model.Post;
 import java.util.List;
 
 public interface IPostService {
+    // Begin modify Leonardo
+    // buscar post por ID
+    Object addPost(PostDto postDto) throws IllegalArgumentException;
+    Post save (Post post);
+    List<Post> findAll();
+    Post findById(int id);
+    //ends modify Leonardo
+
+    List<PostDto> followedList(Integer userId, String order);
+
     Object addPost(PostDto postDto);
 
     Object followedList(Integer userId, String order);
