@@ -1,5 +1,6 @@
 package com.example.sprint1.controller;
 
+import com.example.sprint1.exception.NotFoundException;
 import com.example.sprint1.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,9 +30,12 @@ public class UserController {
         if (order == null){
             return new ResponseEntity<>(userService.getFollowerList(userId),HttpStatus.OK);
         }
+        if (order.equals("name_asc") || order.equals("name_desc")){
+            return new ResponseEntity<>(userService.getFollowersOrdered(userId, order),HttpStatus.OK);
+        }
         else {
-            //TODO modify method value
-            return new ResponseEntity<>(userService.getFollowedOrdered(userId, order),HttpStatus.OK);
+            throw new NotFoundException("Query params not matching any case");
+
         }
 
 
@@ -44,8 +48,11 @@ public class UserController {
         if (order == null){
             return new ResponseEntity<>(userService.getFollowedList(userId), HttpStatus.OK);
         }
-        else {
+        if(order.equals("name_asc") || order.equals("name_desc")){
             return new ResponseEntity<>(userService.getFollowedOrdered(userId, order), HttpStatus.OK);
+        }
+        else {
+            throw new NotFoundException("Query params not matching any case");
         }
     }
 
