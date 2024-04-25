@@ -11,15 +11,15 @@ public interface IUserService {
 
     Object getFollowerList(Integer userId);
 
-    Object getFollowedList(Integer userId);
+    Object getFollowedList(Integer userId, String order);
 
     Object setUnfollow(Integer userId, Integer userIdToUnfollow);
-
-    Object getFollowedList(Integer userId, String order);
 
     Object getFollowerList(Integer userId, String order);
 
     Object getFollowersOrdered(Integer userId, String order);
 
     List<User> getUsers();
+
+    Object getFollowedOrdered(Integer userId, String order);
 }

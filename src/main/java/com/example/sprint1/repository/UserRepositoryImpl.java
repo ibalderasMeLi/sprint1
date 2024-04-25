@@ -20,6 +20,10 @@ public class UserRepositoryImpl implements IUserRepository{
         loadDatabase();
     }
 
+    /**
+     * Method use to load listOfUsers
+     * @throws IOException
+     */
     private void loadDatabase() throws IOException {
         File file;
         ObjectMapper objectMapper = new ObjectMapper();
@@ -31,15 +35,30 @@ public class UserRepositoryImpl implements IUserRepository{
         listOfUsers = users;
     }
 
+    /**
+     * Returns the list of all users
+     * @return
+     */
     public List<User> findAll(){
         return listOfUsers;
     }
 
+
+    /**
+     * Function that searches in the list by userId
+     * @param id Id of the user to search
+     * @return returns the user or null if it isnt found in the list
+     */
     @Override
     public User findUserById(Integer id) {
         return listOfUsers.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(null);
     }
 
+    /**
+     * Function that updates the followers of userToFollow and followed of user
+     * @param user User who will follow
+     * @param userToFollow User who will be followed
+     */
     @Override
     public void updateUserFollower(User user, User userToFollow) {
         user.addFollowed(userToFollow.getId());

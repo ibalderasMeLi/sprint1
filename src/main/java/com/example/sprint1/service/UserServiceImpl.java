@@ -14,6 +14,11 @@ public class UserServiceImpl implements IUserService{
     @Autowired
     IUserRepository userRepository;
 
+    /**
+    * Adds a follower to the set of follower and a followed to the set of followed
+    * @param userID Id of the user who will follow
+     * @param userIdToFollow Id of the user to follow
+     */
     @Override
     public void addFollower(Integer userID, Integer userIdToFollow) {
         User userAux = userRepository.findUserById(userID);
@@ -38,19 +43,16 @@ public class UserServiceImpl implements IUserService{
     }
 
     @Override
-    public Object getFollowedList(Integer userId) {
+    public Object getFollowedList(Integer userId, String order) {
         return null;
     }
+
 
     @Override
     public Object setUnfollow(Integer userId, Integer userIdToUnfollow) {
         return null;
     }
 
-    @Override
-    public Object getFollowedList(Integer userId, String order) {
-        return null;
-    }
 
     @Override
     public Object getFollowerList(Integer userId, String order) {
@@ -65,5 +67,10 @@ public class UserServiceImpl implements IUserService{
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Object getFollowedOrdered(Integer userId, String order) {
+        return null;
     }
 }

@@ -9,36 +9,67 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/products")
-public class ProductController {
+public class PostController {
 
     @Autowired
     IProductService productService;
 
-    //US 0005
+    /**
+     * US 0005
+     * Create a new post
+     * @param postDto
+     * @return
+     */
     @PostMapping("/products/post")
     public ResponseEntity<?> addPost(@RequestBody PostDto postDto) {
         return new ResponseEntity<>(productService.addPost(postDto), HttpStatus.CREATED);
     }
 
-    //US 0006 US 0009
+
+    /**
+     * US 0006 US 0009
+     * Obtain a list of the publications made by the sellers that a user follows in the last two weeks
+     * Sort by ascending and descending date
+     * @param userId
+     * @param order
+     * @return
+     */
     @GetMapping("/followed/{userId}/list")
     public ResponseEntity<?> followedList(@PathVariable Integer userId, @RequestParam String order) {
         return new ResponseEntity<>(productService.followedList(userId, order), HttpStatus.OK);
     }
 
-    //US 0010:
+
+    /**
+     * US 0010
+     * Carry out the publication of a new promotional product
+     * @param postDto
+     * @return
+     */
     @PostMapping("/promo-post")
     public ResponseEntity<?> postPromo(@RequestBody PostDto postDto) {
         return new ResponseEntity<>(productService.postPromo(postDto), HttpStatus.CREATED);
     }
 
-    //US 0011
+
+    /**
+     * US 0011
+     * Obtain the number of products on promotion from a certain seller
+     * @param user_id
+     * @return
+     */
     @GetMapping("/promo-post/count")
     public ResponseEntity<?> quantityPromo(@RequestParam Integer user_id) {
         return new ResponseEntity<>(productService.quantityPromo(user_id), HttpStatus.OK);
     }
 
-    //US 0012
+
+    /**
+     * US 0012
+     * Obtain a list of all the products on promotion from a certain seller
+     * @param user_id
+     * @return
+     */
     @GetMapping("/promo-post/list")
     public ResponseEntity<?> getPromo(@RequestParam Integer user_id) {
         return new ResponseEntity<>(productService.getPromo(user_id), HttpStatus.OK);
