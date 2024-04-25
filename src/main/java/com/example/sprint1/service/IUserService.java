@@ -17,5 +17,9 @@ public interface IUserService {
 
     Object getFollowersOrdered(Integer userId, String order);
 
+
     FollowerUsersDto convertToFollowUserDto(User user);
+
+    Object getFollowedOrdered(Integer userId, String order);
+
 }
