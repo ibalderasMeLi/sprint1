@@ -9,7 +9,6 @@ public interface IProductService {
 
     Object orderedList(Integer userId, String order);
 
-
     Object postPromo(PostDto postDto);
 
     Object quantityPromo(Integer user_id);

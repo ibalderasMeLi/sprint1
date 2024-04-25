@@ -30,4 +30,20 @@ public class UserRepositoryImpl implements IUserRepository{
 
         listOfUsers = users;
     }
+
+    public List<User> findAll(){
+        return listOfUsers;
+    }
+
+    @Override
+    public User findUserById(Integer id) {
+        return listOfUsers.stream().filter(user -> user.getId().equals(id)).findFirst().orElse(null);
+    }
+
+    @Override
+    public void updateUserFollower(User user, User userToFollow) {
+        user.addFollowed(userToFollow.getId());
+        userToFollow.addFollower(user.getId());
+    }
+
 }
