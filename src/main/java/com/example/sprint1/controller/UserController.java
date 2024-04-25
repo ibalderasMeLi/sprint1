@@ -24,13 +24,15 @@ public class UserController {
         return new ResponseEntity<>(userService.getFollowerCount(userId),HttpStatus.OK);
     }
 
+    /*
+     * This method is used to get the list of followers that the user have and package it into a FolloweRListDto object
+     * @param userId - The id of the user
+     * @return - A FollowerListDto object that contains the list of followers that the user have
+     */
     @GetMapping("/{userId}/followers/list")
     public ResponseEntity<?> getFollowerList(@PathVariable Integer userId, @RequestParam(required = false) String order){
-        /**
-         * This method is used to get the list of followers that the user have and package it into a FolloweRListDto object
-         * @param userId - The id of the user
-         * @return - A FollowerListDto object that contains the list of followers that the user have
-         */
+
+        // Validation on whether the list will have any order
         if (order == null || order.isEmpty()){
             return new ResponseEntity<>(userService.getFollowerList(userId, order),HttpStatus.OK);
         }

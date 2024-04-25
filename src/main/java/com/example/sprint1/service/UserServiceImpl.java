@@ -29,8 +29,15 @@ public class UserServiceImpl implements IUserService{
         return null;
     }
 
+    /**
+     * Get the list of followers for a user
+     * @param userId The ID of the user
+     * @param order The order in which to return the followers
+     * @return The list of followers for the user
+     */
     @Override
     public FollowerListDto getFollowerList(Integer userId, String order) {
+        // Get the user by ID and check if the user exists
         Optional<User> optionalUser = userRepository.getUserById(userId);
         User principalUser = optionalUser.orElseThrow(
                 () -> new NotFoundException("No se encontró el usuario con el ID proporcionado"));
@@ -39,6 +46,7 @@ public class UserServiceImpl implements IUserService{
 
         Set<Integer> followers = principalUser.getFollowers();
 
+        // Iterate over the followers and add them to the list in DTO format
         for (Integer miniId : followers) {
             optionalUser = userRepository.getUserById(miniId);
             optionalUser.ifPresent(user -> followersList.add(convertToFollowUserDto(user)));
