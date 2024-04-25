@@ -10,10 +10,13 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
-public class PostRepositoryImpl implements IPostRepository{
+public class PostRepositoryImpl implements IPostRepository {
 
     // begin modify Leonardo
     // A static list that stores all posts loaded from the JSON file or added dynamically. ArrayList.
@@ -24,7 +27,7 @@ public class PostRepositoryImpl implements IPostRepository{
      * @throws IOException If there is an error reading the file, an IOException is thrown.
      */
 
-    public PostRepositoryImpl() throws IOException{
+    public PostRepositoryImpl() throws IOException {
         loadDatabase();
     }
 
@@ -78,4 +81,16 @@ public class PostRepositoryImpl implements IPostRepository{
                 .orElse(null);
     }
     // finished modify Leonardo
+
+    @Override
+    public List<Post> getResentPost(Integer userId) {
+
+        LocalDate twoWeeksAgo = LocalDate.now().minusWeeks(2);
+
+        return  listOfPosts.stream()
+                .filter(post -> post.getUser_id().equals(userId))
+                .filter(post -> LocalDate.parse(post.getDate()).isAfter(twoWeeksAgo))
+                .collect(Collectors.toList());
+    }
 }
+
