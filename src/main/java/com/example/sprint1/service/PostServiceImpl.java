@@ -47,6 +47,7 @@ public class PostServiceImpl implements IPostService {
             throw new IllegalArgumentException("A post with this ID already exists.");
         }
         postRepository.save(post); // Saves the post to the repository
+        userService.addPost(post.getUser_id(), post.getId()); // Adds the post to the user's list of posts
         return postDto; // Returns the PostDto, could be enhanced with more data if needed
     }
 
