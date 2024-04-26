@@ -1,6 +1,7 @@
 package com.example.sprint1.controller;
 
 import com.example.sprint1.dto.PostDto;
+import com.example.sprint1.dto.PromoPostDto;
 import com.example.sprint1.service.IPostService;
 import com.example.sprint1.service.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +62,7 @@ public class PostController {
          * @return
          */
         @PostMapping("/promo-post")
-        public ResponseEntity<?> postPromo (@RequestBody PostDto postDto){
+        public ResponseEntity<?> postPromo (@RequestBody PromoPostDto postDto){
             return new ResponseEntity<>(postService.postPromo(postDto), HttpStatus.CREATED);
         }
 

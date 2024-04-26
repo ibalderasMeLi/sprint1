@@ -7,6 +7,7 @@ import com.example.sprint1.dto.FollowerUsersDto;
 import com.example.sprint1.dto.FollowListDto;
 import com.example.sprint1.dto.FollowdUserDto;
 import com.example.sprint1.exception.NotFoundException;
+import com.example.sprint1.model.Post;
 import com.example.sprint1.model.User;
 import com.example.sprint1.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -265,5 +266,28 @@ public class UserServiceImpl implements IUserService{
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public void addPost(Integer userId, Integer postId) {
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new NotFoundException("User not found.");
+        }
+        if(checkPostIdUnique(user.getPosts().stream().toList(),postId)){
+            user.getPosts().add(postId);
+            userRepository.addPost(userId,postId);
+        }else{
+            throw new IllegalArgumentException("Post Id is already in the list");
+        }
+    }
+
+    private Boolean checkPostIdUnique(List<Integer> postList,Integer id){
+        for(Integer p:postList){
+            if(p.equals(id)){
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -30,4 +30,10 @@ public class ExceptionController {
         ExceptionDto exceptionDto = new ExceptionDto(e.getMessage());
         return new ResponseEntity<>(exceptionDto,HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> badArgument(IllegalArgumentException e){
+        ExceptionDto exceptionDto = new ExceptionDto((e.getMessage()));
+        return new ResponseEntity<>(exceptionDto,HttpStatus.UNPROCESSABLE_ENTITY);
+    }
 }
