@@ -82,10 +82,11 @@ public class UserServiceImpl implements IUserService{
 
 
     /**
-     * Get the list of followers for a user
-     * @param userId The ID of the user
-     * @param order The order in which to return the followers
-     * @return The list of followers for the user
+     *Retrieves the list of followers for a given user ID and orders them based on the provided criteria.
+     *If the provided user ID does not exist, throws a NotFoundException.
+     *If the provided order parameter is invalid, throws a BadRequestException.
+     *@param userId The ID of the user whose followers are to be retrieved.
+     *@param order The order in which the followers are to be sorted. Acceptable values are "name_asc" for ascending order
      */
     @Override
     public FollowListDto getFollowerList(Integer userId, String order) {
@@ -128,10 +129,11 @@ public class UserServiceImpl implements IUserService{
     }
 
     /**
-     * Gets the followed list
-     * @param userId
-     * @param order alphanumerical order
-     * @return FollowListDto
+     *Retrieves the list of users followed by a given user ID and orders them based on the provided criteria.
+     *If the provided user ID does not exist, throws a NotFoundException.
+     *If the provided order parameter is invalid, throws a BadRequestException.
+     *@param userId The ID of the user whose followed users are to be retrieved.
+     *@param order The order in which the followed users are to be sorted. Acceptable values are "name_asc" for ascending order
      */
     @Override
     public  FollowListDto getFollowedList(Integer userId, String order) {
