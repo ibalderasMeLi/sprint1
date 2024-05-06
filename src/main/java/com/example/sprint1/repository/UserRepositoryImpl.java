@@ -107,4 +107,14 @@ public class UserRepositoryImpl implements IUserRepository{
         }
     }
 
+    @Override
+    public List<User> getFollowersById(Integer id) {
+        return null;
+    }
+
+    @Override
+    public List<User> getFollowedById(Integer id) {
+        return null;
+    }
+
 }
